@@ -48,11 +48,11 @@ _header_
 </header>
 _header_
     # Menu
-    echo "<div id=\"side_bar\">"
+    echo "<div class=\"side_bar\">"
     sw_menu $1
     echo "</div>"
     # Body
-    echo "<div id=\"content\">"
+    echo "<div class=\"main\">"
     sw_main $1
     echo "</div>"
     # Footer
