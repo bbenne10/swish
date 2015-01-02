@@ -67,10 +67,8 @@ _footer_
 }
 
 sw_style() {
-	if [ -f $CDIR/$STYLE ]; then
-		echo '<style type="text/css">'
-		cat $CDIR/$STYLE
-		echo '</style>'
+    if [ $STYLE ]; then
+        echo '<link rel="stylesheet" type="text/css" href="'$STYLE'">'
 	fi
 }
 
@@ -95,6 +93,9 @@ rm -rf $ODIR
 mkdir -p $ODIR
 cp -rf $IDIR/* $ODIR
 rm -f `find $ODIR -type f -iname '*.md'`
+if [ -f $CDIR/$STYLE ]; then
+   cp $CDIR/$STYLE $ODIR/$STYLE
+fi
 
 # Parse files
 cd $IDIR
