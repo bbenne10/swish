@@ -40,24 +40,26 @@ _header_
 	cat << _header_
 </head>
 <body>
-<div class="header">
-<h1 class="headerTitle">
+<div class="wrapper">
+<header>
+<h1 class="header_title">
 <a href="`echo $1 | sed -e 's,[^/]*/,../,g' -e 's,[^/]*.md$,index.html,g'`">${TITLE}</a> <span class="headerSubtitle">${SUBTITLE}</span>
 </h1>
-</div>
+</header>
 _header_
-	# Menu
-	echo "<div id=\"side-bar\">"
-	sw_menu $1
-	echo "</div>"
-	# Body
-	echo "<div id=\"main\">"
-	sw_main $1
-	echo "</div>"
-	# Footer
-	cat << _footer_
-<div id="footer">
+    # Menu
+    echo "<div id=\"side_bar\">"
+    sw_menu $1
+    echo "</div>"
+    # Body
+    echo "<div id=\"content\">"
+    sw_main $1
+    echo "</div>"
+    # Footer
+    cat << _footer_
+<footer>
 <div class="right"><a href="https://github.com/jroimartin/sw">Powered by sw</a></div>
+</footer>
 </div>
 </body>
 </html>
