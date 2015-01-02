@@ -46,6 +46,7 @@ _header_
 <a href="`echo $1 | sed -e 's,[^/]*/,../,g' -e 's,[^/]*.md$,index.html,g'`">${TITLE}</a> <span class="headerSubtitle">${SUBTITLE}</span>
 </h1>
 </header>
+<div class="content">
 _header_
     # Menu
     echo "<div class=\"side_bar\">"
@@ -60,6 +61,7 @@ _header_
 <footer>
 <div class="right"><a href="https://github.com/jroimartin/sw">Powered by sw</a></div>
 </footer>
+</div>
 </div>
 </body>
 </html>
