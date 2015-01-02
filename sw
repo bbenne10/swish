@@ -59,7 +59,7 @@ _header_
     # Footer
     cat << _footer_
 <footer>
-<div class="right"><a href="https://github.com/jroimartin/sw">Powered by sw</a></div>
+<div class="right"><a href="https://github.com/bbenne10/sw">Powered by sw</a></div>
 </footer>
 </div>
 </div>
