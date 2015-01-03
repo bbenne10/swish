@@ -36,7 +36,7 @@ sw_page() {
 <meta charset="UTF-8">
 _header_
 	# Stylesheet
-	sw_style
+	sw_style $1
 	cat << _header_
 </head>
 <body>
@@ -68,10 +68,20 @@ _header_
 _footer_
 }
 
+sw_make_path_relative() {
+    python -c "import os.path; print os.path.relpath('$2', '$1')"
+}
+
 sw_style() {
-    if [ $STYLE ]; then
-        echo '<link rel="stylesheet" type="text/css" href="'$STYLE'">'
+    cwd=$PWD
+    cd `dirname $1`
+    rel_cwd=`sw_make_path_relative $PWD $cwd`
+    rel_style=`find $rel_cwd -maxdepth 1 -name $STYLE`
+
+    if [ $rel_style ]; then
+        echo '<link rel="stylesheet" type="text/css" href="'$rel_style'">'
 	fi
+    cd $cwd
 }
 
 # Set input dir
