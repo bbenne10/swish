@@ -90,10 +90,13 @@ fi
 
 # Setup output dir structure
 CDIR=$PWD
+IDIR=`readlink -f $IDIR`
 ODIR="$CDIR/`basename $IDIR`.static"
+
 rm -rf $ODIR
 mkdir -p $ODIR
-cp -rf $IDIR/* $ODIR
+find $IDIR \( -path "$IDIR/.git*" -o -path "$ODIR" -o -path "$IDIR/sw.conf" \) -prune -o -not -path $IDIR -exec cp -r '{}' $ODIR \;
+
 rm -f `find $ODIR -type f -iname '*.md'`
 if [ -f $CDIR/$STYLE ]; then
    cp $CDIR/$STYLE $ODIR/$STYLE
