@@ -6,4 +6,4 @@ SUBTITLE=""            # Site subtitle
 BL="index.html images" # Black list
 STYLE="style.css"      # Stylesheet name
 # External apps
-MDHANDLER="/usr/local/bin/md2html.awk" # md handler
+MDHANDLER="markdown_py -x tables -x def_list" # md handler
