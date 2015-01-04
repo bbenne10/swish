@@ -110,7 +110,7 @@ find $IDIR \( -path "$IDIR/.git*" -o -path "$ODIR" -o -path "$IDIR/sw.conf" \) -
 rm -f `find $ODIR -type f -iname '*.md'`
 if [ -f $CDIR/$STYLE ]; then
     if [ $STYLE_IS_LESS -eq 1 ]; then
-        lesscpy $CDIR/$STYLE > $ODIR/$STYLE
+        $LESSHANDLER $CDIR/$STYLE > $ODIR/$STYLE
     else
         cp $CDIR/$STYLE $ODIR/$STYLE
     fi
