@@ -42,8 +42,8 @@ _header_
 <body>
 <div class="wrapper">
 <header>
-<h1 class="header_title">
-<a href="`echo $1 | sed -e 's,[^/]*/,../,g' -e 's,[^/]*.md$,index.html,g'`">${TITLE}</a> <span class="headerSubtitle">${SUBTITLE}</span>
+<h1 class="title">
+<a href="`echo $1 | sed -e 's,[^/]*/,../,g' -e 's,[^/]*.md$,index.html,g'`">${TITLE}</a> <span class="subtitle">${SUBTITLE}</span>
 </h1>
 </header>
 <div class="content">
