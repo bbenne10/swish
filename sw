@@ -110,10 +110,13 @@ find $IDIR \( -path "$IDIR/.git*" -o -path "$ODIR" -o -path "$IDIR/sw.conf" \) -
 rm -f `find $ODIR -type f -iname '*.md'`
 if [ -f $CDIR/$STYLE ]; then
     if [ $STYLE_IS_LESS -eq 1 ]; then
-        $LESSHANDLER $CDIR/$STYLE > $ODIR/$STYLE
-    else
-        cp $CDIR/$STYLE $ODIR/$STYLE
+        LESS_STYLE=$STYLE;
+        STYLE=`echo $STYLE | sed 's|\.less|\.css|g'`
+        echo "* compiling $CDIR/$LESS_STYLE -> $ODIR/$STYLE"
+        $LESSHANDLER $CDIR/$LESS_STYLE > $CDIR/$STYLE
     fi
+
+    cp $CDIR/$STYLE $ODIR/$STYLE
 fi
 
 # Parse files
@@ -122,7 +125,11 @@ FILES=`find . -iname '*.md' | sed -e 's,^\./,,'`
 for a in $FILES; do
 	b="$ODIR/`echo $a | sed -e 's,.md$,.html,g'`"
 	echo "* $a"
-	sw_page $a > $b;
+	sw_page $a > $b
 done
+
+if [ $STYLE_IS_LESS -eq 1 ]; then
+    rm $STYLE
+fi
 
 exit 0
