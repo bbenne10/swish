@@ -13,13 +13,14 @@ sw_main() {
 
 sw_menu() {
 	echo "<ul>"
-	[ -z "`echo $1 | grep index.md`" ] && echo "<li><a href=\"index.html\">.</a></li>"
-	[ "`dirname $1`" != "." ] && echo "<li><a href=\"../index.html\">..</a></li>"
+	[ -z "`echo $1 | grep index.md`" ] && echo "<li><a href=\"/\">.</a></li>"
+	[ "`dirname $1`" != "." ] && echo "<li><a href=\"../\">..</a></li>"
 	FILES=`ls \`dirname $1\` | sed -e 's,.md$,.html,g'`
 	for i in $FILES ; do
 		sw_filter $i && continue
 		NAME=`echo $i | sed -e 's/\..*$//' -e 's/_/ /g'`
-		[ -z "`echo $i | grep '\..*$'`" ] && i="$i/index.html"
+		[ -z "`echo $i | grep '\..*$'`" ] && i="$i/"
+		i=`echo $i | sed -e 's,.html$,,g'`
 		echo "<li><a href=\"$i\">$NAME</a></li>"
 	done
 	echo "</ul>"
