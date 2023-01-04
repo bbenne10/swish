@@ -72,7 +72,7 @@ _footer_
 }
 
 sw_make_path_relative() {
-    python -c "import os.path; print os.path.relpath('$2', '$1')"
+    realpath --relative-to="$1" "$2"
 }
 
 sw_style() {
