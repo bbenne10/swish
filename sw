@@ -8,13 +8,14 @@ sw_filter() {
 }
 
 sw_main() {
-	$MDHANDLER $1
+	comrak --gfm $1
 }
 
 sw_menu() {
 	echo "<ul>"
 	[ -z "`echo $1 | grep index.md`" ] && echo "<li><a href=\"/\">.</a></li>"
 	[ "`dirname $1`" != "." ] && echo "<li><a href=\"../\">..</a></li>"
+
 	FILES=`ls \`dirname $1\` | sed -e 's,.md$,.html,g'`
 	for i in $FILES ; do
 		sw_filter $i && continue
@@ -111,13 +112,6 @@ find $IDIR \( -path "$IDIR/.git*" -o -path "$ODIR" -o -path "$IDIR/sw.conf" \) -
 
 rm -f `find $ODIR -type f -iname '*.md'`
 if [ -f $CDIR/$STYLE ]; then
-    if [ $STYLE_IS_LESS -eq 1 ]; then
-        LESS_STYLE=$STYLE;
-        STYLE=`echo $STYLE | sed 's|\.less|\.css|g'`
-        echo "* compiling $CDIR/$LESS_STYLE -> $ODIR/$STYLE"
-        $LESSHANDLER $CDIR/$LESS_STYLE > $CDIR/$STYLE
-    fi
-
     cp $CDIR/$STYLE $ODIR/$STYLE
 fi
 
@@ -129,9 +123,5 @@ for a in $FILES; do
 	echo "* $a"
 	sw_page $a > $b
 done
-
-if [ $STYLE_IS_LESS -eq 1 ]; then
-    rm $STYLE
-fi
 
 exit 0

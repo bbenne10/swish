@@ -5,8 +5,3 @@ TITLE="foo.org"        # Site title
 SUBTITLE=""            # Site subtitle
 BL="index.html images" # Black list
 STYLE="style.css"      # Stylesheet name
-STYLE_IS_LESS=0        # Set to 1 to parse stylesheet as LESS
-
-# External apps
-MDHANDLER="markdown_py -x tables -x def_list" # md handler
-LESSHANDLER="lesscpy"
