@@ -16,7 +16,7 @@
             installPhase = ''
               DESTDIR=$out make install
             '';
-            buildInputs = with pkgs; [
+            propagatedBuildInputs = with pkgs; [
               coreutils
               comrak
             ];
