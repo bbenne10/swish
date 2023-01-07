@@ -5,12 +5,12 @@ DESTDIR?=/usr/local
 all: sw.conf
 
 sw.conf:
-	cp sw.conf.def sw.conf
+	cp swish.conf.def swish.conf
 
 install:
 	mkdir -p ${DESTDIR}/bin
-	cp -f sw ${DESTDIR}/bin/sw
-	chmod +x ${DESTDIR}/bin/sw
+	cp -f swi.sh ${DESTDIR}/bin/swi.sh
+	chmod +x ${DESTDIR}/bin/swi.sh
 
 uninstall:
 	rm ${DESTDIR}/bin/sw

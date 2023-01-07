@@ -8,11 +8,12 @@
     let pkgs = nixpkgs.legacyPackages.${system}; in
     rec {
       packages = {
-        sw = pkgs.stdenv.mkDerivation
+        swish = pkgs.stdenv.mkDerivation
           {
-            pname = "sw";
+            pname = "swish";
             version = "1.0.0";
             src = ./.;
+            doBuild = false;
             installPhase = ''
               DESTDIR=$out make install
             '';
@@ -22,7 +23,13 @@
             ];
           };
       };
-      defaultPackage = packages.sw;
+      defaultPackage = packages.swish;
+      devShell = pkgs.mkShell {
+        packages = with pkgs; [
+          shellcheck
+        ];
+        inputsFrom = [ packages.swish ];
+      };
     }
   );
 }

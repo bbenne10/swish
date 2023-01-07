@@ -1,0 +1,10 @@
+# sw - suckless webframework - 2012 - nibble <develsec.org>
+
+# Configuration
+TITLE="Bryan Bennett"    # Site title
+SUBTITLE="🚀 a foray into space"            # Site subtitle
+BL="images"              # Black list
+STYLE="style.css"        # Stylesheet name
+
+STRIP_HTML_SUFFIX=0      # strip ".html" from uris for cleaner linking? Requires server support
+IMPLICIT_INDEX_LINKING=0 # Remove "index.html" from directory links? Requires server support
