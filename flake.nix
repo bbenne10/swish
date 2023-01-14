@@ -14,13 +14,13 @@
             version = "1.0.0";
             src = ./.;
             doBuild = false;
+            patchPhase = ''
+              substituteInPlace swi.sh \
+                --replace "comrak" "${pkgs.comrak}/bin/comrak"
+            '';
             installPhase = ''
               DESTDIR=$out make install
             '';
-            propagatedBuildInputs = with pkgs; [
-              coreutils
-              comrak
-            ];
           };
       };
       defaultPackage = packages.swish;
