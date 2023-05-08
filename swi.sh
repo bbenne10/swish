@@ -52,6 +52,7 @@ swish_style() {
   rel_cwd=$(realpath --relative-to=$PWD $cwd)
 
   rel_style=$(find "$rel_cwd" -maxdepth 1 -name "$STYLE")
+  minify --type css "$rel_style" -o "$rel_style"
 
   if [ $rel_style ]; then
     echo '<link rel="stylesheet" type="text/css" href="'$rel_style'">'
@@ -88,7 +89,7 @@ swish_menu() {
 }
 
 swish_body() {
-	comrak --gfm $1
+    comrak --gfm $1 | minify --type html
 }
 
 swish_page() {

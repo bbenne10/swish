@@ -8,20 +8,14 @@
     let pkgs = nixpkgs.legacyPackages.${system}; in
     rec {
       packages = {
-        swish = pkgs.stdenv.mkDerivation
-          {
-            pname = "swish";
-            version = "1.0.0";
-            src = ./.;
-            doBuild = false;
-            patchPhase = ''
-              substituteInPlace swi.sh \
-                --replace "comrak" "${pkgs.comrak}/bin/comrak"
-            '';
-            installPhase = ''
-              DESTDIR=$out make install
-            '';
-          };
+        swish = pkgs.writeShellApplication {
+          name = "swi.sh";
+          runtimeInputs = with pkgs; [
+            comrak
+            minify
+          ];
+          text = builtins.readFile ./swi.sh;
+        };
       };
       defaultPackage = packages.swish;
       devShell = pkgs.mkShell {
