@@ -36,28 +36,30 @@ NAV_TMPL=$(cat <<EOF
 EOF
 )
 
+TITLE="title"
+SUBTITLE="subtitle"
+BL=""
+STYLE="style.css "
+
 swish_filter() {
-	for b in $BL; do
-		[ "$b" = "$1" ] && return 0
-	done
+  for b in $BL; do
+    [ "$b" = "$1" ] && return 0
+  done
 }
 
 swish_style() {
-  # TODO: Can this be simplified with:
-  #  cp *.css $ODIR
-  #  find $ODIR -name "*.css" -printf "<a...href="...""?
-  # difficulty will be making path relative to $ODIR, so maybe just pushd first?
   cwd=$PWD
-  cd `dirname $1`
-  rel_cwd=$(realpath --relative-to=$PWD $cwd)
+  pushd "$(dirname "$1")" || return
+  cd "$(dirname "$1")" || return
+  rel_cwd=$(realpath --relative-to="$PWD" "$cwd")
 
   rel_style=$(find "$rel_cwd" -maxdepth 1 -name "$STYLE")
   minify --type css "$rel_style" -o "$rel_style"
 
-  if [ $rel_style ]; then
-    echo '<link rel="stylesheet" type="text/css" href="'$rel_style'">'
+  if [ "$rel_style" ]; then
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$rel_style\">"
   fi
-  cd $cwd
+  popd || return
 }
 
 swish_menu() {
@@ -66,37 +68,37 @@ swish_menu() {
   else 
     echo "<li><a href=\"./index.html\">Home</a></li>"
   fi
-  dname=$(dirname $1)
-  readarray -d '' FILES < <(find "$dname" -name "*.md")
-
-  for i in $FILES; do
-		swish_filter "$i" && continue
-    NAME="${i//_/ /}"  # underscores to spaces
+  dname=$(dirname "$1")
+  while read -r -d '' file; do
+    swish_filter "$file" && continue
+    NAME="${file//_/ /}"  # underscores to spaces
     NAME="${NAME%.md}"    # Remove .md suffix
     NAME="${NAME%/index}" # Remove "index" suffix (if exists)
     NAME="${NAME#\./}"    # Remove "./" prefix
-    if [[ $(basename "$i") == "index.md" ]]; then
+    if [[ $(basename "$file") == "index.md" ]]; then
       # This is a folder index of some sort.
-      if [[ $(dirname "$i") == "." ]]; then
+      if [[ $(dirname "$file") == "." ]]; then
         continue
       elif [[ "$IMPLICIT_INDEX_LINKING" == 1 ]]; then
-        i=${i%index.md}
+        file=${file%index.md}
       fi
     fi
-    i=${i//.md/.html}
-		echo "<li><a href=\"$i\">$NAME</a></li>"
-	done
+    file=${file//.md/.html}
+    echo "<li><a href=\"$file\">$NAME</a></li>"
+  done < <(find "$dname" -iname '*.md')
 }
 
 swish_body() {
-    comrak --gfm $1 | minify --type html
+    comrak --gfm "$1" | minify --type html
 }
 
 swish_page() {
     style=$(swish_style "$1")
     menu=$(swish_menu "$1")
+    # shellcheck disable=SC2059
     nav=$(printf "$NAV_TMPL" "$menu")
     body=$(swish_body "$1")
+    # shellcheck disable=SC2059
     printf "$BODY_TMPL" "$TITLE" "$style" "$TITLE" "$SUBTITLE" "$nav" "$body"
 }
 
@@ -127,18 +129,17 @@ find "$IDIR" \( -path "$IDIR/.git*" -o -path "$ODIR" -o -path "$IDIR/swish.conf"
 
 find "$ODIR" -type f -iname '*.md' -exec rm '{}' \;
 if [ -f "$CDIR/$STYLE" ]; then
-  echo "* $CDIR/$STYLE -> $(realpath --relative-to=$CDIR $ODIR)/$STYLE"
+  echo "* $CDIR/$STYLE -> $(realpath --relative-to="$CDIR" "$ODIR")/$STYLE"
   cp "$CDIR/$STYLE" "$ODIR/$STYLE"
 fi
 
 # Parse files
 pushd "$IDIR" >/dev/null || exit
-FILES=$(find . -iname '*.md' | sed -e 's,^\./,,')
-for a in $FILES; do
-  b="$ODIR/${a%.md}.html"
-  echo "* $a -> $(realpath --relative-to=$CDIR $b)"
-  swish_page "$a" > "$b"
-done
+while read -r -d '' file; do
+  b="$ODIR/${file%.md}.html"
+  echo "* $file -> $(realpath --relative-to="$CDIR" "$b")"
+  swish_page "$file" > "$b"
+done < <(find . -iname '*.md' | sed -e 's,^\./,,')
 popd || exit
 
 exit 0
