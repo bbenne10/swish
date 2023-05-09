@@ -102,18 +102,27 @@ swish_page() {
     printf "$BODY_TMPL" "$TITLE" "$style" "$TITLE" "$SUBTITLE" "$nav" "$body"
 }
 
+if [ "$#" != 1 ]; then
+  >&2 echo  "Usage: $0 [dir]"
+  exit 1
+fi
+
 # Set input dir
 IDIR="${1%/}"
 if [ -z "$IDIR" ] || [ ! -d "$IDIR" ]; then
-  echo "Usage: sw [dir]"
+  >&2 echo  "Usage: $0 [dir]"
   exit 1
 fi
 
 # Load config file
 if [ ! -f "$PWD/swish.conf" ]; then
-  echo "Cannot find swish.conf in current directory"
+  >&2 echo "ERROR: Cannot find swish.conf in current directory"
   exit 1
 fi
+
+# Override previous definitions (top of file)
+# disable shellcheck here since we already have definitions
+# shellcheck disable=SC1091
 . "$PWD/swish.conf"
 
 # Setup output dir structure
