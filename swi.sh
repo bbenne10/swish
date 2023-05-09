@@ -49,7 +49,7 @@ swish_filter() {
 
 swish_style() {
   cwd=$PWD
-  pushd "$(dirname "$1")" || return
+  pushd "$(dirname "$1")" >/dev/null|| return
   cd "$(dirname "$1")" || return
   rel_cwd=$(realpath --relative-to="$PWD" "$cwd")
 
@@ -59,7 +59,7 @@ swish_style() {
   if [ "$rel_style" ]; then
     echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$rel_style\">"
   fi
-  popd || return
+  popd >/dev/null|| return
 }
 
 swish_menu() {
@@ -149,6 +149,6 @@ while read -r file; do
   echo "* $file -> $(realpath --relative-to="$CDIR" "$b")"
   swish_page "$file" > "$b"
 done < <(find . -iname '*.md' | sed -e 's,^\./,,')
-popd || exit
+popd >/dev/null|| exit
 
 exit 0
