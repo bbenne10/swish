@@ -1,8 +1,5 @@
-# sw - suckless webframework - 2012 - nibble <develsec.org>
-
-# Configuration
-TITLE="Bryan Bennett"    # Site title
-SUBTITLE="🚀 a foray into space"            # Site subtitle
-BL="images"              # Black list
-STYLE="style.css"        # Stylesheet name
-IMPLICIT_INDEX_LINKING=0 # Remove "index.html" from directory links? Requires server support
+TITLE="Swish Title"        # Site title
+SUBTITLE="Swish Subtitle"  # Site subtitle
+BL="images"                # Black list
+STYLE="style.css"          # Stylesheet name
+IMPLICIT_INDEX_LINKING=0   # Remove "index.html" from directory links? Requires server support
