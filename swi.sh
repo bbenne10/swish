@@ -69,7 +69,7 @@ swish_menu() {
     echo "<li><a href=\"./index.html\">Home</a></li>"
   fi
   dname=$(dirname "$1")
-  while read -r -d '' file; do
+  while read -r file; do
     swish_filter "$file" && continue
     NAME="${file//_/ /}"  # underscores to spaces
     NAME="${NAME%.md}"    # Remove .md suffix
@@ -144,7 +144,7 @@ fi
 
 # Parse files
 pushd "$IDIR" >/dev/null || exit
-while read -r -d '' file; do
+while read -r file; do
   b="$ODIR/${file%.md}.html"
   echo "* $file -> $(realpath --relative-to="$CDIR" "$b")"
   swish_page "$file" > "$b"
