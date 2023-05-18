@@ -89,7 +89,7 @@ swish_menu() {
 }
 
 swish_body() {
-    comrak --gfm "$1" | minify --type html
+    comrak --gfm "$1" --syntax-highlighting none | minify --type html
 }
 
 swish_page() {
