@@ -71,6 +71,11 @@ swish_menu() {
   dname=$(dirname "$1")
   while read -r file; do
     swish_filter "$file" && continue
+
+    local active=0
+    if [[ "${file#./}" == "$1" ]]; then
+      active=1
+    fi
     NAME="${file//_/ /}"  # underscores to spaces
     NAME="${NAME%.md}"    # Remove .md suffix
     NAME="${NAME%/index}" # Remove "index" suffix (if exists)
@@ -84,7 +89,11 @@ swish_menu() {
       fi
     fi
     file=${file//.md/.html}
-    echo "<li><a href=\"$file\">$NAME</a></li>"
+    if [[ "$active" == "1" ]]; then
+      echo "<li class=\"active\"><a href=\"$file\">$NAME</a></li>"
+    else
+      echo "<li><a href=\"$file\">$NAME</a></li>"
+    fi
   done < <(find "$dname" -iname '*.md')
 }
 
